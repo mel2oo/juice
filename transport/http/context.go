@@ -56,6 +56,8 @@ type Context interface {
 	// tag: `uri:"xxx"`
 	ShouldBindURI(obj interface{}) error
 
+	ShouldBindFormMultipart(obj interface{}) error
+
 	// Redirect 重定向
 	Redirect(code int, location string)
 
@@ -187,6 +189,10 @@ func (c *context) ShouldBindJSON(obj interface{}) error {
 // tag: `uri:"xxx"`
 func (c *context) ShouldBindURI(obj interface{}) error {
 	return c.ctx.ShouldBindUri(obj)
+}
+
+func (c *context) ShouldBindFormMultipart(obj interface{}) error {
+	return c.ctx.ShouldBindWith(obj, binding.FormMultipart)
 }
 
 // Redirect 重定向
