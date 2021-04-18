@@ -15,7 +15,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/switch-li/juice/pkg/logger"
-	"github.com/switch-li/juice/pkg/trace"
+	"github.com/switch-li/juice/transport/http/middleware/trace"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 	"golang.org/x/time/rate"
@@ -128,8 +128,8 @@ func New(logger logger.Logger, options ...Option) (*Mux, error) {
 					Text(ServerError)),
 				)
 
-				if notify := opt.panicNotify; notify != nil {
-					notify(context, err, stackInfo)
+				if notify := opt.panicNotify; notify != nil && opt.mailOptions != nil {
+					notify(context, opt.mailOptions, err, stackInfo)
 				}
 			}
 

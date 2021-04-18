@@ -5,6 +5,8 @@ import (
 
 	"github.com/switch-li/juice/pkg/logger/zap"
 	"github.com/switch-li/juice/transport/http"
+	"github.com/switch-li/juice/transport/http/middleware/metrics"
+	"github.com/switch-li/juice/transport/http/middleware/notify"
 )
 
 func Hello() http.HandlerFunc {
@@ -18,8 +20,8 @@ func main() {
 	mux, err := http.New(log,
 		http.WithEnableCors(),
 		http.WithEnableRate(),
-		// http.WithPanicNotify(notify.OnPanicNotify),
-		// gin.WithRecordMetrics(metrics.RecordMetrics),
+		http.WithPanicNotify(notify.OnPanicNotify),
+		http.WithRecordMetrics(metrics.RecordMetrics),
 	)
 	if err != nil {
 		panic(err)

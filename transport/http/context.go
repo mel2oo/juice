@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/switch-li/juice/pkg/logger"
 	"github.com/switch-li/juice/pkg/logger/zap"
-	"github.com/switch-li/juice/pkg/trace"
+	"github.com/switch-li/juice/transport/http/middleware/trace"
 )
 
 type HandlerFunc func(c Context)

@@ -1,6 +1,10 @@
 package http
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/switch-li/juice/pkg/mail"
+)
 
 type Option func(*option)
 
@@ -9,12 +13,13 @@ type option struct {
 	disableSwagger    bool
 	disablePrometheus bool
 	panicNotify       OnPanicNotify
+	mailOptions       *mail.Options
 	recordMetrics     RecordMetrics
 	enableCors        bool
 	enableRate        bool
 }
 
-type OnPanicNotify func(ctx Context, err interface{}, stackInfo string)
+type OnPanicNotify func(ctx Context, opts *mail.Options, err interface{}, stackInfo string)
 
 type RecordMetrics func(method, uri string, success bool, httpCode, businessCode int, costSeconds float64, traceId string)
 
@@ -40,6 +45,12 @@ func WithPanicNotify(notify OnPanicNotify) Option {
 	return func(opt *option) {
 		opt.panicNotify = notify
 		fmt.Println("* [register panic notify]")
+	}
+}
+
+func WithMailOptions(mailOptions *mail.Options) Option {
+	return func(o *option) {
+		o.mailOptions = mailOptions
 	}
 }
 
