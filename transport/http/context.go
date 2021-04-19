@@ -4,6 +4,7 @@ import (
 	"bytes"
 	stdctx "context"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/url"
 	"strings"
@@ -57,6 +58,7 @@ type Context interface {
 	ShouldBindURI(obj interface{}) error
 
 	ShouldBindFormMultipart(obj interface{}) error
+	SaveUploadedFile(file *multipart.FileHeader, dst string) error
 
 	// Redirect 重定向
 	Redirect(code int, location string)
@@ -77,6 +79,9 @@ type Context interface {
 	// GraphPayload GraphQL返回值 与 api 返回结构不同
 	GraphPayload(payload interface{})
 	getGraphPayload() interface{}
+
+	// File 返回文件
+	File(path string)
 
 	// AbortWithError 错误返回
 	AbortWithError(err Error)
@@ -195,6 +200,10 @@ func (c *context) ShouldBindFormMultipart(obj interface{}) error {
 	return c.ctx.ShouldBindWith(obj, binding.FormMultipart)
 }
 
+func (c *context) SaveUploadedFile(file *multipart.FileHeader, dst string) error {
+	return c.ctx.SaveUploadedFile(file, dst)
+}
+
 // Redirect 重定向
 func (c *context) Redirect(code int, location string) {
 	c.ctx.Redirect(code, location)
@@ -246,6 +255,10 @@ func (c *context) getGraphPayload() interface{} {
 		return payload
 	}
 	return nil
+}
+
+func (c *context) File(path string) {
+	c.ctx.File(path)
 }
 
 func (c *context) GraphPayload(payload interface{}) {
