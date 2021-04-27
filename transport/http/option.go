@@ -12,6 +12,7 @@ type option struct {
 	disablePProf      bool
 	disableSwagger    bool
 	disablePrometheus bool
+	disableLogger     bool
 	panicNotify       OnPanicNotify
 	mailOptions       *mail.Options
 	recordMetrics     RecordMetrics
@@ -38,6 +39,12 @@ func WithDisableSwagger() Option {
 func WithDisableproPrometheus() Option {
 	return func(opt *option) {
 		opt.disablePrometheus = true
+	}
+}
+
+func WithDisableLogger() Option {
+	return func(o *option) {
+		o.disableLogger = true
 	}
 }
 
