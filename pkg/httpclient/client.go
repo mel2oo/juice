@@ -1,11 +1,17 @@
 package httpclient
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	httpURL "net/url"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/pkg/errors"
@@ -143,6 +149,58 @@ func withoutBody(method, url string, form httpURL.Values, options ...Option) (bo
 // PostForm post form 请求
 func PostForm(url string, form httpURL.Values, options ...Option) (body []byte, err error) {
 	return withFormBody(http.MethodPost, url, form, options...)
+}
+
+func PostFormMultipart(url, key, file string, form map[string]string, options ...Option) (body []byte, err error) {
+	bodyBuffer := &bytes.Buffer{}
+	bodyWriter := multipart.NewWriter(bodyBuffer)
+
+	fw, _ := bodyWriter.CreateFormFile(key, filepath.Base(file))
+	f, _ := os.Open(file)
+	io.Copy(fw, f)
+	f.Close()
+
+	for k, v := range form {
+		bodyWriter.WriteField(k, v)
+	}
+
+	contentType := bodyWriter.FormDataContentType()
+	bodyWriter.Close()
+
+	if resp, err := http.Post(url, contentType, bodyBuffer); err != nil {
+		return nil, err
+	} else {
+		defer resp.Body.Close()
+
+		return ioutil.ReadAll(resp.Body)
+	}
+}
+
+func PostFormMultiparts(url, key string, files []string, form map[string]string, options ...Option) (body []byte, err error) {
+	bodyBuffer := &bytes.Buffer{}
+	bodyWriter := multipart.NewWriter(bodyBuffer)
+
+	for _, file := range files {
+		fw, _ := bodyWriter.CreateFormFile(key, filepath.Base(file))
+		f, _ := os.Open(file)
+		io.Copy(fw, f)
+		f.Close()
+	}
+
+	for k, v := range form {
+		bodyWriter.WriteField(k, v)
+	}
+
+	contentType := bodyWriter.FormDataContentType()
+	bodyWriter.Close()
+
+	if resp, err := http.Post(url, contentType, bodyBuffer); err != nil {
+		return nil, err
+	} else {
+		defer resp.Body.Close()
+
+		return ioutil.ReadAll(resp.Body)
+	}
 }
 
 // PostJSON post json 请求

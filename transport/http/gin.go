@@ -237,17 +237,27 @@ func New(logger logger.Logger, options ...Option) (*Mux, error) {
 			t.CostSeconds = time.Since(ts).Seconds()
 
 			if !opt.disableLogger {
-				logger.Info("interceptor",
-					zap.Any("method", ctx.Request.Method),
-					zap.Any("path", decodedURL),
-					zap.Any("http_code", ctx.Writer.Status()),
-					zap.Any("business_code", businessCode),
-					zap.Any("success", t.Success),
-					zap.Any("cost_seconds", t.CostSeconds),
-					zap.Any("trace_id", t.Identifier),
-					zap.Any("trace_info", t),
-					zap.Error(abortErr),
-				)
+				if opt.simpleLogger {
+					logger.Info(
+						fmt.Sprintf("interceptor | method: %s | path: %s | http_code: %d",
+							ctx.Request.Method,
+							decodedURL,
+							ctx.Writer.Status(),
+						),
+					)
+				} else {
+					logger.Info("interceptor",
+						zap.Any("method", ctx.Request.Method),
+						zap.Any("path", decodedURL),
+						zap.Any("http_code", ctx.Writer.Status()),
+						zap.Any("business_code", businessCode),
+						zap.Any("success", t.Success),
+						zap.Any("cost_seconds", t.CostSeconds),
+						zap.Any("trace_id", t.Identifier),
+						zap.Any("trace_info", t),
+						zap.Error(abortErr),
+					)
+				}
 			}
 		}()
 

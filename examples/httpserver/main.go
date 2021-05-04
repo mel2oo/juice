@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"mime/multipart"
+	http2 "net/http"
 
 	_ "github.com/switch-li/juice/examples/httpserver/docs"
 	"github.com/switch-li/juice/pkg/logger/zap"
@@ -18,8 +20,31 @@ import (
 // @Success 200
 // @Router /hello [post]
 func Hello() http.HandlerFunc {
+	return func(c http.Context) {}
+}
+
+func Upload() http.HandlerFunc {
+	type request struct {
+		Aa    string                  `form:"aa"`
+		Files []*multipart.FileHeader `form:"file"`
+	}
 	return func(c http.Context) {
-		c.Payload("hello world")
+		req := new(request)
+		if err := c.ShouldBindFormMultipart(req); err != nil {
+			c.AbortWithError(
+				http.NewError(
+					http2.StatusBadRequest,
+					http.ParamBindError,
+					http.Text(http.ParamBindError),
+				).WithErr(err),
+			)
+			return
+		}
+
+		for _, f := range req.Files {
+			c.SaveUploadedFile(f, f.Filename)
+		}
+
 	}
 }
 
@@ -40,13 +65,15 @@ func main() {
 		http.WithEnableRate(),
 		http.WithPanicNotify(notify.OnPanicNotify),
 		http.WithRecordMetrics(metrics.RecordMetrics),
+		http.WithSimplelogger(),
 	)
 	if err != nil {
 		panic(err)
 	}
 
 	demo := mux.Group("/demo")
-	demo.GET("hello", Hello())
+	demo.GET("/hello", Hello())
+	demo.POST("/upload", Upload())
 
 	srv := http.NewServer(
 		mux,
