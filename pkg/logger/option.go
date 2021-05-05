@@ -10,42 +10,50 @@ import (
 type Option func(*Options)
 
 type Options struct {
-	Development   bool
-	DisableCaller bool
-	OutputPath    string
-	Prefix        string
+	Development       bool
+	DisableCaller     bool
+	DisableStacktrace bool
+	OutputPath        string
+	Prefix            string
 }
 
 func NewOptions() *Options {
 	s := filepath.Base(os.Args[0])
 	t := time.Now().Format("2006-01-02")
 	return &Options{
-		Development:   true,
-		DisableCaller: false,
-		OutputPath:    fmt.Sprintf("%s_%s.log", s, t),
-		Prefix:        fmt.Sprintf("[%s] ", s),
+		Development:       true,
+		DisableCaller:     false,
+		DisableStacktrace: false,
+		OutputPath:        fmt.Sprintf("%s_%s.log", s, t),
+		Prefix:            fmt.Sprintf("[%s] ", s),
 	}
 }
 
-func WithDevelopment(b bool) Option {
+func WithDevelopment() Option {
 	return func(o *Options) {
-		o.Development = b
+		o.Development = true
 	}
 }
 
-func DisableCaller() Option {
+func WithDisableCaller() Option {
 	return func(o *Options) {
 		o.DisableCaller = true
 	}
 }
 
-func OutputPath(s string) Option {
+func WithDisableStacktrace() Option {
+	return func(o *Options) {
+		o.DisableStacktrace = true
+	}
+}
+
+func WithOutputPath(s string) Option {
 	return func(o *Options) {
 		o.OutputPath = s
 	}
 }
 
-func Prefix(s string) Option {
+func WithPrefix(s string) Option {
 	return func(o *Options) {
 		o.Prefix = s + " "
 	}

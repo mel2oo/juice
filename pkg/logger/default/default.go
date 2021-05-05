@@ -11,8 +11,8 @@ import (
 )
 
 var DefaultLogger logger.Logger = NewDefaultLogger(
-	logger.WithDevelopment(true),
-	logger.DisableCaller(),
+	logger.WithDevelopment(),
+	logger.WithDisableCaller(),
 )
 
 type defaultLogger struct {

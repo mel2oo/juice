@@ -17,14 +17,14 @@ func Test_DefaultLogger(t *testing.T) {
 
 func Test_DisableDevelopment(t *testing.T) {
 	log := NewDefaultLogger(
-		logger.WithDevelopment(false),
+		logger.WithDevelopment(),
 	)
 	log.Info("hello world")
 }
 
 func Test_DisableCaller(t *testing.T) {
 	log := NewDefaultLogger(
-		logger.DisableCaller(),
+		logger.WithDisableCaller(),
 	)
 	log.Info("hello world")
 }

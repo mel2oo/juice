@@ -15,7 +15,7 @@ func Test_ZapLogger(t *testing.T) {
 
 func Test_ZapLogFile(t *testing.T) {
 	log := NewZapLogger(
-		logger.WithDevelopment(false),
+		logger.WithDevelopment(),
 	)
 
 	log.(*ZapLogger).ReplaceGlobals()

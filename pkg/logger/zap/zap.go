@@ -47,17 +47,17 @@ func newDevelopment(opts *logger.Options) Config {
 	encoderConfig := zap.NewDevelopmentEncoderConfig()
 	encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 
-	//https://github.com/natefinch/lumberjack
 	var w io.Writer
 	w = os.Stdout
 	sink := zapcore.AddSync(w)
 
 	return Config{
-		Level:         zap.NewAtomicLevelAt(zap.DebugLevel),
-		Development:   true,
-		Encoder:       zapcore.NewConsoleEncoder(encoderConfig),
-		DisableCaller: opts.Development,
-		WriteSyncer:   sink,
+		Level:             zap.NewAtomicLevelAt(zap.DebugLevel),
+		Development:       opts.Development,
+		DisableCaller:     opts.DisableCaller,
+		DisableStacktrace: opts.DisableStacktrace,
+		Encoder:           zapcore.NewConsoleEncoder(encoderConfig),
+		WriteSyncer:       sink,
 	}
 }
 
@@ -80,19 +80,12 @@ func newProduction(opts *logger.Options) Config {
 	sink := zapcore.AddSync(w)
 
 	return Config{
-		Level:         zap.NewAtomicLevelAt(zap.InfoLevel),
-		Development:   false,
-		Encoder:       zapcore.NewConsoleEncoder(encoderConfig), //NewJSONEncoder
-		DisableCaller: opts.Development,
-		WriteSyncer:   sink,
-		// InitialFields: map[string]interface{}{
-		// 	"app_name": cfg.AppConfig.App.Name,
-		// 	"market":   cfg.AppConfig.MarketName(),
-		// },
-		//Sampling: &zap.SamplingConfig{
-		//	Initial:    100,
-		//	Thereafter: 100,
-		//},
+		Level:             zap.NewAtomicLevelAt(zap.InfoLevel),
+		Development:       opts.Development,
+		DisableCaller:     opts.DisableCaller,
+		DisableStacktrace: opts.DisableStacktrace,
+		Encoder:           zapcore.NewConsoleEncoder(encoderConfig), //NewJSONEncoder
+		WriteSyncer:       sink,
 	}
 }
 
