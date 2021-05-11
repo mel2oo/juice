@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 )
 
@@ -58,9 +57,6 @@ func WithOutputName(s string) Option {
 
 func WithOutputPath(s string) Option {
 	return func(o *Options) {
-		if !strings.HasSuffix(s, "/") {
-			s += "/"
-		}
 		o.OutputPath = s
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"github.com/switch-li/juice/pkg/logger"
 )
@@ -43,6 +44,9 @@ func newDevelopment(opts *logger.Options) logger.Logger {
 }
 
 func newProduction(opts *logger.Options) logger.Logger {
+	if opts.OutputPath != "" && !strings.HasSuffix(opts.OutputPath, "/") {
+		opts.OutputPath += "/"
+	}
 
 	logFile, err := os.OpenFile(opts.OutputPath+opts.OutputName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
 	if err != nil {

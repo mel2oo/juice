@@ -4,6 +4,7 @@ import (
 	"io"
 	"os"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/natefinch/lumberjack"
@@ -68,6 +69,9 @@ func newProduction(opts *logger.Options) Config {
 	var w io.Writer
 	w = os.Stdout
 	if opts.OutputPath != "" {
+		if !strings.HasSuffix(opts.OutputPath, "/") {
+			opts.OutputPath += "/"
+		}
 		w = &lumberjack.Logger{
 			Filename:   opts.OutputPath + opts.OutputName,
 			MaxSize:    500, // megabytes
