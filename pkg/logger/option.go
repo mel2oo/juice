@@ -13,6 +13,7 @@ type Options struct {
 	Development       bool
 	DisableCaller     bool
 	DisableStacktrace bool
+	OutputName        string
 	OutputPath        string
 	Prefix            string
 }
@@ -24,6 +25,7 @@ func NewOptions() *Options {
 		Development:       false,
 		DisableCaller:     false,
 		DisableStacktrace: false,
+		OutputName:        "./",
 		OutputPath:        fmt.Sprintf("%s_%s.log", s, t),
 		Prefix:            fmt.Sprintf("[%s] ", s),
 	}
@@ -44,6 +46,12 @@ func WithDisableCaller() Option {
 func WithDisableStacktrace() Option {
 	return func(o *Options) {
 		o.DisableStacktrace = true
+	}
+}
+
+func WithOutputName(s string) Option {
+	return func(o *Options) {
+		o.OutputName = s
 	}
 }
 

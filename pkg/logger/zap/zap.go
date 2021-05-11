@@ -70,7 +70,7 @@ func newProduction(opts *logger.Options) Config {
 	w = os.Stdout
 	if opts.OutputPath != "" {
 		w = &lumberjack.Logger{
-			Filename:   opts.OutputPath,
+			Filename:   opts.OutputPath + opts.OutputName,
 			MaxSize:    500, // megabytes
 			MaxBackups: 3,
 			MaxAge:     14,   //days
