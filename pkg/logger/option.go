@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -25,8 +26,8 @@ func NewOptions() *Options {
 		Development:       false,
 		DisableCaller:     false,
 		DisableStacktrace: false,
-		OutputName:        "./",
-		OutputPath:        fmt.Sprintf("%s_%s.log", s, t),
+		OutputPath:        "./",
+		OutputName:        fmt.Sprintf("%s_%s.log", s, t),
 		Prefix:            fmt.Sprintf("[%s] ", s),
 	}
 }
@@ -57,7 +58,9 @@ func WithOutputName(s string) Option {
 
 func WithOutputPath(s string) Option {
 	return func(o *Options) {
-		os.MkdirAll(s, 0755)
+		if !strings.HasSuffix(s, "/") {
+			s += "/"
+		}
 		o.OutputPath = s
 	}
 }

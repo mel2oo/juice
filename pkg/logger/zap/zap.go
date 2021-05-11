@@ -6,9 +6,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/switch-li/juice/pkg/logger"
-
 	"github.com/natefinch/lumberjack"
+	"github.com/switch-li/juice/pkg/logger"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -73,8 +72,8 @@ func newProduction(opts *logger.Options) Config {
 			Filename:   opts.OutputPath + opts.OutputName,
 			MaxSize:    500, // megabytes
 			MaxBackups: 3,
-			MaxAge:     14,   //days
-			Compress:   true, // disabled by default
+			MaxAge:     14,    //days
+			Compress:   false, // disabled by default
 		}
 	}
 	sink := zapcore.AddSync(w)
