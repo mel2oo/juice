@@ -57,6 +57,7 @@ func WithOutputName(s string) Option {
 
 func WithOutputPath(s string) Option {
 	return func(o *Options) {
+		os.MkdirAll(s, 0755)
 		o.OutputPath = s
 	}
 }
