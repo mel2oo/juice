@@ -58,9 +58,6 @@ func NewServer(opts ...ServerOption) *Server {
 		network: "tcp",
 		address: ":",
 		timeout: time.Second * 5,
-		middleware: middleware.ChainUnaryServer(
-			logging.UnaryServerInterceptor(dlog.NewDefaultLogger()),
-		),
 	}
 	srv.Server = grpc.NewServer(grpc.UnaryInterceptor(srv.middleware))
 
@@ -71,6 +68,10 @@ func NewServer(opts ...ServerOption) *Server {
 	if srv.log == nil {
 		srv.log = dlog.NewDefaultLogger()
 	}
+
+	srv.middleware = middleware.ChainUnaryServer(
+		logging.UnaryServerInterceptor(srv.log),
+	)
 
 	return srv
 }
