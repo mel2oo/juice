@@ -44,7 +44,7 @@ func newDevelopment(opts *logger.Options) logger.Logger {
 
 func newProduction(opts *logger.Options) logger.Logger {
 
-	logFile, err := os.OpenFile(opts.OutputPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
+	logFile, err := os.OpenFile(opts.OutputPath+opts.OutputName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
 	if err != nil {
 		panic(err)
 	}
