@@ -6,21 +6,21 @@ import (
 	http2 "net/http"
 
 	_ "github.com/switch-li/juice/examples/httpserver/docs"
+	"github.com/switch-li/juice/pkg/logger"
 	"github.com/switch-li/juice/pkg/logger/zap"
 	"github.com/switch-li/juice/transport/http"
-	"github.com/switch-li/juice/transport/http/middleware/metrics"
-	"github.com/switch-li/juice/transport/http/middleware/notify"
 )
 
-// @Summary
-// @Description
-// @Tags Demo
-// @Accept  json
-// @Produce  json
-// @Success 200
-// @Router /hello [post]
 func Hello() http.HandlerFunc {
-	return func(c http.Context) {}
+	return func(c http.Context) {
+		c.FileFromMultipart("1.txt", []byte("hello"))
+	}
+}
+
+func Hi() http.HandlerFunc {
+	return func(c http.Context) {
+		fmt.Println("hi")
+	}
 }
 
 func Upload() http.HandlerFunc {
@@ -48,23 +48,14 @@ func Upload() http.HandlerFunc {
 	}
 }
 
-// @title juice docs api
-// @version
-// @description
-
-// @contact.name
-// @contact.url
-// @contact.email
-
-// @host 127.0.0.1:8880
-// @BasePath
 func main() {
-	log := zap.NewZapLogger()
+	log := zap.NewZapLogger(
+		logger.WithDevelopment(),
+	)
 	mux, err := http.New(log,
 		http.WithEnableCors(),
 		http.WithEnableRate(),
-		http.WithPanicNotify(notify.OnPanicNotify),
-		http.WithRecordMetrics(metrics.RecordMetrics),
+		http.WithDisableSwagger(),
 		http.WithSimplelogger(),
 	)
 	if err != nil {
@@ -73,11 +64,14 @@ func main() {
 
 	demo := mux.Group("/demo")
 	demo.GET("/hello", Hello())
+	demo.GET("/hi", Hi())
 	demo.POST("/upload", Upload())
 
 	srv := http.NewServer(
 		mux,
-		http.Address(":8880"),
+		http.Network("tcp"),
+		http.Address(":8830"),
+		http.Logger(log),
 	)
 
 	err = srv.Start()

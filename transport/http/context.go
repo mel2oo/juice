@@ -82,6 +82,7 @@ type Context interface {
 
 	// File 返回文件
 	File(path string)
+	FileFromMultipart(filename string, data []byte)
 
 	// AbortWithError 错误返回
 	AbortWithError(err Error)
@@ -259,6 +260,13 @@ func (c *context) getGraphPayload() interface{} {
 
 func (c *context) File(path string) {
 	c.ctx.File(path)
+}
+
+func (c *context) FileFromMultipart(filename string, data []byte) {
+	fileContentDisposition := "attachment;filename=\"" + filename + "\""
+	c.ctx.Header("Content-Type", "multipart/form-data")
+	c.ctx.Header("Content-Disposition", fileContentDisposition)
+	c.ctx.Data(http.StatusOK, "multipart/form-data", data)
 }
 
 func (c *context) GraphPayload(payload interface{}) {
