@@ -52,15 +52,12 @@ func NewServer(mux *Mux, opts ...ServerOption) *Server {
 		network: "tcp",
 		address: ":",
 		timeout: time.Second * 5,
+		log:     dlog.DefaultLogger,
 		exit:    make(chan chan error),
 	}
 
 	for _, o := range opts {
 		o(srv)
-	}
-
-	if srv.log == nil {
-		srv.log = dlog.NewDefaultLogger()
 	}
 
 	return srv
@@ -69,6 +66,7 @@ func NewServer(mux *Mux, opts ...ServerOption) *Server {
 func (s *Server) Start() error {
 	lis, err := net.Listen(s.network, s.address)
 	if err != nil {
+		s.log.Error(err)
 		return err
 	}
 

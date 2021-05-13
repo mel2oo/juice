@@ -70,12 +70,8 @@ func main() {
 	srv := http.NewServer(
 		mux,
 		http.Network("tcp"),
-		http.Address(":10000"),
-		http.Logger(log),
+		http.Address(":10002"),
 	)
 
 	err = srv.Start()
-	if err != nil {
-		fmt.Println(err)
-	}
 }

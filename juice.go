@@ -2,6 +2,10 @@ package juice
 
 import (
 	"context"
+	"errors"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -14,8 +18,8 @@ type App struct {
 
 func NewApp(opts ...Option) *App {
 	options := options{
-		ctx: context.Background(),
-		// sigs: []os.Signal{syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT},
+		ctx:  context.Background(),
+		sigs: []os.Signal{syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT},
 	}
 
 	for _, o := range opts {
@@ -31,40 +35,38 @@ func NewApp(opts ...Option) *App {
 }
 
 func (a *App) Run() error {
-	var err error
 	g, ctx := errgroup.WithContext(a.ctx)
 	for _, srv := range a.opts.servers {
 		srv := srv
 
 		g.Go(func() error {
 			<-ctx.Done()
-			err = srv.Stop()
-			return err
+			return srv.Stop()
 		})
 
 		g.Go(func() error {
-			err = srv.Start()
-			return err
+			return srv.Start()
 		})
 	}
 
-	// c := make(chan os.Signal, 1)
-	// signal.Notify(c, a.opts.sigs...)
-	// g.Go(func() error {
-	// 	for {
-	// 		select {
-	// 		case <-ctx.Done():
-	// 			return ctx.Err()
-	// 		case <-c:
-	// 			a.Stop()
-	// 		}
-	// 	}
-	// })
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, a.opts.sigs...)
+	g.Go(func() error {
+		for {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-c:
+				a.Stop()
+			}
+		}
+	})
 
-	// if err := g.Wait(); err != nil && !errors.Is(err, context.Canceled) {
-	// 	return err
-	// }
-	return err
+	if err := g.Wait(); err != nil && !errors.Is(err, context.Canceled) {
+		return err
+	}
+
+	return nil
 }
 
 func (a *App) Stop() error {

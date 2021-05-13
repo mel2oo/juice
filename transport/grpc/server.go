@@ -45,7 +45,7 @@ func Middleware(gm grpc.UnaryServerInterceptor) ServerOption {
 
 type Server struct {
 	*grpc.Server
-	lis        net.Listener
+	// lis        net.Listener
 	network    string
 	address    string
 	timeout    time.Duration
@@ -58,15 +58,12 @@ func NewServer(opts ...ServerOption) *Server {
 		network: "tcp",
 		address: ":",
 		timeout: time.Second * 5,
+		log:     dlog.DefaultLogger,
 	}
 	srv.Server = grpc.NewServer(grpc.UnaryInterceptor(srv.middleware))
 
 	for _, o := range opts {
 		o(srv)
-	}
-
-	if srv.log == nil {
-		srv.log = dlog.NewDefaultLogger()
 	}
 
 	srv.middleware = middleware.ChainUnaryServer(
@@ -79,10 +76,11 @@ func NewServer(opts ...ServerOption) *Server {
 func (s *Server) Start() error {
 	lis, err := net.Listen(s.network, s.address)
 	if err != nil {
+		s.log.Error(err)
 		return err
 	}
 
-	s.lis = lis
+	// s.lis = lis
 
 	s.log.Info("grpc server listen on:", lis.Addr().String())
 

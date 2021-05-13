@@ -12,8 +12,10 @@ import (
 )
 
 var DefaultLogger logger.Logger = NewDefaultLogger(
+	logger.WithPrefix("*"),
 	logger.WithDevelopment(),
 	logger.WithDisableCaller(),
+	logger.WithDisableStacktrace(),
 )
 
 type defaultLogger struct {

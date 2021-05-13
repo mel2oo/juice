@@ -1,8 +1,7 @@
 package http
 
 import (
-	"fmt"
-
+	dlog "github.com/switch-li/juice/pkg/logger/default"
 	"github.com/switch-li/juice/pkg/mail"
 )
 
@@ -58,7 +57,7 @@ func WithSimplelogger() Option {
 func WithPanicNotify(notify OnPanicNotify) Option {
 	return func(opt *option) {
 		opt.panicNotify = notify
-		fmt.Println("* [register panic notify]")
+		dlog.DefaultLogger.Info("[register panic notify]")
 	}
 }
 
@@ -77,14 +76,14 @@ func WithRecordMetrics(record RecordMetrics) Option {
 func WithEnableCors() Option {
 	return func(opt *option) {
 		opt.enableCors = true
-		fmt.Println("* [register cors]")
+		dlog.DefaultLogger.Info("[register cors]")
 	}
 }
 
 func WithEnableRate() Option {
 	return func(opt *option) {
 		opt.enableRate = true
-		fmt.Println("* [register rate]")
+		dlog.DefaultLogger.Info("[register rate]")
 	}
 }
 

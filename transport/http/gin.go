@@ -15,6 +15,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/switch-li/juice/pkg/logger"
+	dlog "github.com/switch-li/juice/pkg/logger/default"
 	"github.com/switch-li/juice/transport/http/middleware/trace"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
@@ -61,17 +62,17 @@ func New(logger logger.Logger, options ...Option) (*Mux, error) {
 
 	if !opt.disablePProf {
 		pprof.Register(mux.engine)
-		fmt.Println("* [register pprof]")
+		dlog.DefaultLogger.Info("[register pprof]")
 	}
 
 	if !opt.disableSwagger {
 		mux.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-		fmt.Println("* [register swagger]")
+		dlog.DefaultLogger.Info("[register swagger]")
 	}
 
 	if !opt.disablePrometheus {
 		mux.engine.GET("/metrics", gin.WrapH(promhttp.Handler()))
-		fmt.Println("* [register prometheus]")
+		dlog.DefaultLogger.Info("[register prometheus]")
 	}
 
 	if opt.enableCors {
