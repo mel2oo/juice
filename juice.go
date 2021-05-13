@@ -31,17 +31,20 @@ func NewApp(opts ...Option) *App {
 }
 
 func (a *App) Run() error {
+	var err error
 	g, ctx := errgroup.WithContext(a.ctx)
 	for _, srv := range a.opts.servers {
 		srv := srv
 
 		g.Go(func() error {
 			<-ctx.Done()
-			return srv.Stop()
+			err = srv.Stop()
+			return err
 		})
 
 		g.Go(func() error {
-			return srv.Start()
+			err = srv.Start()
+			return err
 		})
 	}
 
@@ -61,7 +64,7 @@ func (a *App) Run() error {
 	// if err := g.Wait(); err != nil && !errors.Is(err, context.Canceled) {
 	// 	return err
 	// }
-	return nil
+	return err
 }
 
 func (a *App) Stop() error {

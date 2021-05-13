@@ -70,7 +70,7 @@ func main() {
 	srv := http.NewServer(
 		mux,
 		http.Network("tcp"),
-		http.Address(":8830"),
+		http.Address(":10000"),
 		http.Logger(log),
 	)
 
