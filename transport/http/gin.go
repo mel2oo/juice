@@ -239,7 +239,7 @@ func New(logger logger.Logger, options ...Option) (*Mux, error) {
 
 			if !opt.disableLogger {
 				if opt.simpleLogger {
-					logger.Info(
+					logger.Debug(
 						fmt.Sprintf("interceptor | method: %s | path: %s | http_code: %d",
 							ctx.Request.Method,
 							decodedURL,
@@ -247,7 +247,7 @@ func New(logger logger.Logger, options ...Option) (*Mux, error) {
 						),
 					)
 				} else {
-					logger.Info("interceptor",
+					logger.Debug("interceptor",
 						zap.Any("method", ctx.Request.Method),
 						zap.Any("path", decodedURL),
 						zap.Any("http_code", ctx.Writer.Status()),
