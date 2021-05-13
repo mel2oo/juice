@@ -12,8 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	cors "github.com/rs/cors/wrapper/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/switch-li/juice/pkg/logger"
 	dlog "github.com/switch-li/juice/pkg/logger/default"
 	"github.com/switch-li/juice/transport/http/middleware/trace"
@@ -65,10 +63,10 @@ func New(logger logger.Logger, options ...Option) (*Mux, error) {
 		dlog.DefaultLogger.Info("[register pprof]")
 	}
 
-	if !opt.disableSwagger {
-		mux.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-		dlog.DefaultLogger.Info("[register swagger]")
-	}
+	// if !opt.disableSwagger {
+	// 	mux.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// 	dlog.DefaultLogger.Info("[register swagger]")
+	// }
 
 	if !opt.disablePrometheus {
 		mux.engine.GET("/metrics", gin.WrapH(promhttp.Handler()))

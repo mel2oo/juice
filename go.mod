@@ -15,8 +15,8 @@ require (
 	github.com/prometheus/client_golang v1.10.0
 	github.com/rs/cors v1.7.0
 	github.com/spf13/cast v1.3.1
-	github.com/swaggo/gin-swagger v1.3.0
 	github.com/swaggo/swag v1.7.0
+	github.com/ugorji/go v1.1.13 // indirect
 	go.uber.org/multierr v1.6.0
 	go.uber.org/zap v1.16.0
 	golang.org/x/net v0.0.0-20210423184538-5f58ad60dda6 // indirect

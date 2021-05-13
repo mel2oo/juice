@@ -8,8 +8,8 @@ import (
 type Option func(*option)
 
 type option struct {
-	disablePProf      bool
-	disableSwagger    bool
+	disablePProf bool
+	// disableSwagger    bool
 	disablePrometheus bool
 	disableLogger     bool
 	simpleLogger      bool
@@ -30,11 +30,11 @@ func WithDisablePProf() Option {
 	}
 }
 
-func WithDisableSwagger() Option {
-	return func(opt *option) {
-		opt.disableSwagger = true
-	}
-}
+// func WithDisableSwagger() Option {
+// 	return func(opt *option) {
+// 		opt.disableSwagger = true
+// 	}
+// }
 
 func WithDisableproPrometheus() Option {
 	return func(opt *option) {

@@ -55,7 +55,7 @@ func main() {
 	mux, err := http.New(log,
 		http.WithEnableCors(),
 		http.WithEnableRate(),
-		http.WithDisableSwagger(),
+		// http.WithDisableSwagger(),
 		http.WithSimplelogger(),
 	)
 	if err != nil {
