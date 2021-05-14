@@ -74,10 +74,11 @@ func newProduction(opts *logger.Options) Config {
 		}
 		w = &lumberjack.Logger{
 			Filename:   opts.OutputPath + opts.OutputName,
-			MaxSize:    500, // megabytes
-			MaxBackups: 3,
-			MaxAge:     14,    //days
-			Compress:   false, // disabled by default
+			MaxSize:    opts.MaxSize, // megabytes
+			MaxBackups: opts.MaxBackups,
+			MaxAge:     opts.MaxAge,   //days
+			Compress:   opts.Compress, // disabled by default
+			LocalTime:  true,
 		}
 	}
 	sink := zapcore.AddSync(w)

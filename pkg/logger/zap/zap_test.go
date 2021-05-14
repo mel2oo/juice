@@ -9,8 +9,14 @@ import (
 )
 
 func Test_ZapLogger(t *testing.T) {
-	log := NewZapLogger()
-	log.Info("hello world")
+	log := NewZapLogger(
+		logger.WithMaxSize(1),
+		logger.WithMaxBackups(10),
+		logger.WithMaxAge(1),
+	)
+	for i := 0; i < 100000; i++ {
+		log.Info("hello world hello world hello world hello world hello world")
+	}
 }
 
 func Test_ZapLogFile(t *testing.T) {

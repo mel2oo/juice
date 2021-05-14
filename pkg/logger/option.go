@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 type Option func(*Options)
@@ -16,18 +15,26 @@ type Options struct {
 	OutputName        string
 	OutputPath        string
 	Prefix            string
+	MaxSize           int
+	MaxBackups        int
+	MaxAge            int
+	Compress          bool
 }
 
 func NewOptions() *Options {
 	s := filepath.Base(os.Args[0])
-	t := time.Now().Format("2006-01-02")
+	// t := time.Now().Format("2006-01-02")
 	return &Options{
 		Development:       false,
 		DisableCaller:     false,
 		DisableStacktrace: false,
 		OutputPath:        "./",
-		OutputName:        fmt.Sprintf("%s_%s.log", s, t),
+		OutputName:        fmt.Sprintf("%s.log", s),
 		Prefix:            fmt.Sprintf("[%s] ", s),
+		MaxSize:           30,
+		MaxBackups:        10,
+		MaxAge:            7,
+		Compress:          false,
 	}
 }
 
@@ -64,5 +71,29 @@ func WithOutputPath(s string) Option {
 func WithPrefix(s string) Option {
 	return func(o *Options) {
 		o.Prefix = s + " "
+	}
+}
+
+func WithMaxSize(i int) Option {
+	return func(o *Options) {
+		o.MaxSize = i
+	}
+}
+
+func WithMaxBackups(i int) Option {
+	return func(o *Options) {
+		o.MaxBackups = i
+	}
+}
+
+func WithMaxAge(i int) Option {
+	return func(o *Options) {
+		o.MaxAge = i
+	}
+}
+
+func WithEnableCompress() Option {
+	return func(o *Options) {
+		o.Compress = true
 	}
 }
