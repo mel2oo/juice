@@ -60,7 +60,6 @@ func NewServer(opts ...ServerOption) *Server {
 		timeout: time.Second * 5,
 		log:     dlog.DefaultLogger,
 	}
-	srv.Server = grpc.NewServer(grpc.UnaryInterceptor(srv.middleware))
 
 	for _, o := range opts {
 		o(srv)
@@ -69,6 +68,8 @@ func NewServer(opts ...ServerOption) *Server {
 	srv.middleware = middleware.ChainUnaryServer(
 		logging.UnaryServerInterceptor(srv.log),
 	)
+
+	srv.Server = grpc.NewServer(grpc.UnaryInterceptor(srv.middleware))
 
 	return srv
 }

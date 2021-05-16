@@ -5,7 +5,6 @@ import (
 	"mime/multipart"
 	http2 "net/http"
 
-	_ "github.com/switch-li/juice/examples/httpserver/docs"
 	"github.com/switch-li/juice/pkg/logger"
 	"github.com/switch-li/juice/pkg/logger/zap"
 	"github.com/switch-li/juice/transport/http"
@@ -52,10 +51,10 @@ func main() {
 	log := zap.NewZapLogger(
 		logger.WithDevelopment(),
 	)
-	mux, err := http.New(log,
+	mux, err := http.NewMux(
+		log,
 		http.WithEnableCors(),
 		http.WithEnableRate(),
-		// http.WithDisableSwagger(),
 		http.WithSimplelogger(),
 	)
 	if err != nil {
@@ -71,6 +70,7 @@ func main() {
 		mux,
 		http.Network("tcp"),
 		http.Address(":10002"),
+		http.Logger(log),
 	)
 
 	err = srv.Start()

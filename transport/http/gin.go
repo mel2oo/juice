@@ -42,7 +42,7 @@ var withoutTracePaths = map[string]bool{
 	"/system/health": true,
 }
 
-func New(logger logger.Logger, options ...Option) (*Mux, error) {
+func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 	if logger == nil {
 		return nil, errors.New("logger required")
 	}

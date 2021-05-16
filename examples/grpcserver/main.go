@@ -4,6 +4,8 @@ import (
 	"context"
 
 	pb "github.com/switch-li/juice/examples/greeter"
+	"github.com/switch-li/juice/pkg/logger"
+	"github.com/switch-li/juice/pkg/logger/zap"
 	"github.com/switch-li/juice/transport/grpc"
 )
 
@@ -20,9 +22,13 @@ func (g *GreeterService) SayHello(ctx context.Context, request *pb.HelloRequest)
 }
 
 func main() {
+	log := zap.NewZapLogger(
+		logger.WithDevelopment(),
+	)
 
 	srv := grpc.NewServer(
 		grpc.Address(":8890"),
+		grpc.Logger(log),
 	)
 
 	pb.RegisterGreeterServer(srv, NewGreeterService())
