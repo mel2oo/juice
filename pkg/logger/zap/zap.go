@@ -52,7 +52,7 @@ func newDevelopment(opts *logger.Options) Config {
 	sink := zapcore.AddSync(w)
 
 	return Config{
-		Level:             zap.NewAtomicLevelAt(zap.DebugLevel),
+		Level:             zap.NewAtomicLevelAt(toZapLevel(opts.Level)),
 		Development:       opts.Development,
 		DisableCaller:     opts.DisableCaller,
 		DisableStacktrace: opts.DisableStacktrace,
@@ -84,7 +84,7 @@ func newProduction(opts *logger.Options) Config {
 	sink := zapcore.AddSync(w)
 
 	return Config{
-		Level:             zap.NewAtomicLevelAt(zap.InfoLevel),
+		Level:             zap.NewAtomicLevelAt(toZapLevel(opts.Level)),
 		Development:       opts.Development,
 		DisableCaller:     opts.DisableCaller,
 		DisableStacktrace: opts.DisableStacktrace,
