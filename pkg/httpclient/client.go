@@ -155,9 +155,21 @@ func PostFormMultipart(url, key, file string, form map[string]string, options ..
 	bodyBuffer := &bytes.Buffer{}
 	bodyWriter := multipart.NewWriter(bodyBuffer)
 
-	fw, _ := bodyWriter.CreateFormFile(key, filepath.Base(file))
-	f, _ := os.Open(file)
-	io.Copy(fw, f)
+	fw, err := bodyWriter.CreateFormFile(key, filepath.Base(file))
+	if err != nil {
+		return nil, err
+	}
+
+	f, err := os.Open(file)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = io.Copy(fw, f)
+	if err != nil {
+		return nil, err
+	}
+
 	f.Close()
 
 	for k, v := range form {
@@ -181,9 +193,21 @@ func PostFormMultiparts(url, key string, files []string, form map[string]string,
 	bodyWriter := multipart.NewWriter(bodyBuffer)
 
 	for _, file := range files {
-		fw, _ := bodyWriter.CreateFormFile(key, filepath.Base(file))
-		f, _ := os.Open(file)
-		io.Copy(fw, f)
+		fw, err := bodyWriter.CreateFormFile(key, filepath.Base(file))
+		if err != nil {
+			return nil, err
+		}
+
+		f, err := os.Open(file)
+		if err != nil {
+			return nil, err
+		}
+
+		_, err = io.Copy(fw, f)
+		if err != nil {
+			return nil, err
+		}
+
 		f.Close()
 	}
 
