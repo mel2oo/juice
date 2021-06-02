@@ -58,6 +58,8 @@ func doHTTP(ctx context.Context, method, url string, payload []byte, opt *option
 		req.Header.Set(key, value[0])
 	}
 
+	req.Close = true
+
 	resp, err := defaultClient.Do(req)
 	if err != nil {
 		err = errors.Wrapf(err, "do request [%s %s] err", method, url)
