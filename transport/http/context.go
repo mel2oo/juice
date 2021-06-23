@@ -82,6 +82,7 @@ type Context interface {
 
 	// File 返回文件
 	File(filename, filepath string)
+	FileData(filepath string)
 	FileFromMultipart(filename string, data []byte)
 
 	// AbortWithError 错误返回
