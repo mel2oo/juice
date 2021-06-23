@@ -265,6 +265,10 @@ func (c *context) File(filename, filepath string) {
 	c.ctx.File(filepath)
 }
 
+func (c *context) FileData(filepath string) {
+	c.ctx.File(filepath)
+}
+
 func (c *context) FileFromMultipart(filename string, data []byte) {
 	fileContentDisposition := "attachment;filename=\"" + filename + "\""
 	c.ctx.Header("Content-Type", "multipart/form-data")
