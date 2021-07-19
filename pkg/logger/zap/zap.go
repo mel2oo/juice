@@ -149,16 +149,32 @@ func (z *ZapLogger) Debug(v ...interface{}) {
 	z.Logger.Sugar().Named(z.opts.Prefix).Debug(v)
 }
 
+func (z *ZapLogger) Debugf(format string, args ...interface{}) {
+	z.Logger.Sugar().Named(z.opts.Prefix).Debugf(format, args...)
+}
+
 func (z *ZapLogger) Info(v ...interface{}) {
 	z.Logger.Sugar().Named(z.opts.Prefix).Info(v)
+}
+
+func (z *ZapLogger) Infof(format string, args ...interface{}) {
+	z.Logger.Sugar().Named(z.opts.Prefix).Infof(format, args...)
 }
 
 func (z *ZapLogger) Warn(v ...interface{}) {
 	z.Logger.Sugar().Named(z.opts.Prefix).Warn(v)
 }
 
+func (z *ZapLogger) Warnf(format string, args ...interface{}) {
+	z.Logger.Sugar().Named(z.opts.Prefix).Warnf(format, args...)
+}
+
 func (z *ZapLogger) Error(v ...interface{}) {
 	z.Logger.Sugar().Named(z.opts.Prefix).Error(v)
+}
+
+func (z *ZapLogger) Errorf(format string, args ...interface{}) {
+	z.Logger.Sugar().Named(z.opts.Prefix).Errorf(format, args...)
 }
 
 func (z *ZapLogger) DPanic(v ...interface{}) {

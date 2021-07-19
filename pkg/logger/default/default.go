@@ -94,16 +94,32 @@ func (d *defaultLogger) Debug(v ...interface{}) {
 	d.Log(logger.DebugLevel, fmt.Sprint(v...))
 }
 
+func (d *defaultLogger) Debugf(format string, args ...interface{}) {
+	d.Log(logger.DebugLevel, fmt.Sprintf(format, args...))
+}
+
 func (d *defaultLogger) Info(v ...interface{}) {
 	d.Log(logger.InfoLevel, fmt.Sprint(v...))
+}
+
+func (d *defaultLogger) Infof(format string, args ...interface{}) {
+	d.Log(logger.InfoLevel, fmt.Sprintf(format, args...))
 }
 
 func (d *defaultLogger) Warn(v ...interface{}) {
 	d.Log(logger.WarnLevel, fmt.Sprint(v...))
 }
 
+func (d *defaultLogger) Warnf(format string, args ...interface{}) {
+	d.Log(logger.WarnLevel, fmt.Sprintf(format, args...))
+}
+
 func (d *defaultLogger) Error(v ...interface{}) {
 	d.Log(logger.ErrorLevel, fmt.Sprint(v...))
+}
+
+func (d *defaultLogger) Errorf(format string, args ...interface{}) {
+	d.Log(logger.ErrorLevel, fmt.Sprintf(format, args...))
 }
 
 func (d *defaultLogger) DPanic(v ...interface{}) {
