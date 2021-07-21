@@ -23,6 +23,14 @@ func Address(addr string) ServerOption {
 	}
 }
 
+func TLS(certFile, keyFile string) ServerOption {
+	return func(s *Server) {
+		s.tls = true
+		s.certFile = certFile
+		s.keyFile = keyFile
+	}
+}
+
 func Timeout(timeout time.Duration) ServerOption {
 	return func(s *Server) {
 		s.timeout = timeout
@@ -37,11 +45,14 @@ func Logger(log logger.Logger) ServerOption {
 
 type Server struct {
 	*http.Server
-	network string
-	address string
-	timeout time.Duration
-	log     logger.Logger
-	exit    chan chan error
+	network  string
+	address  string
+	tls      bool
+	certFile string
+	keyFile  string
+	timeout  time.Duration
+	log      logger.Logger
+	exit     chan chan error
 }
 
 func NewServer(mux *Mux, opts ...ServerOption) *Server {
@@ -76,6 +87,10 @@ func (s *Server) Start() error {
 		ch := <-s.exit
 		ch <- lis.Close()
 	}()
+
+	if s.tls {
+		return s.ServeTLS(lis, s.certFile, s.keyFile)
+	}
 
 	return s.Serve(lis)
 }
