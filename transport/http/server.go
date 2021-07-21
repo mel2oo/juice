@@ -2,6 +2,8 @@ package http
 
 import (
 	"crypto/tls"
+	"crypto/x509"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"time"
@@ -24,11 +26,12 @@ func Address(addr string) ServerOption {
 	}
 }
 
-func TLS(certFile, keyFile string) ServerOption {
+func TLS(cafile, certfile, keyfile string) ServerOption {
 	return func(s *Server) {
 		s.tls = true
-		s.certFile = certFile
-		s.keyFile = keyFile
+		s.caFile = cafile
+		s.certFile = certfile
+		s.keyFile = keyfile
 	}
 }
 
@@ -49,6 +52,7 @@ type Server struct {
 	network  string
 	address  string
 	tls      bool
+	caFile   string
 	certFile string
 	keyFile  string
 	timeout  time.Duration
@@ -73,7 +77,15 @@ func NewServer(mux *Mux, opts ...ServerOption) *Server {
 	}
 
 	if srv.tls {
+		pool := x509.NewCertPool()
+		caCrt, err := ioutil.ReadFile(srv.caFile)
+		if err != nil {
+			return nil
+		}
+		pool.AppendCertsFromPEM(caCrt)
+
 		srv.TLSConfig = &tls.Config{
+			ClientCAs:  pool,
 			ClientAuth: tls.RequireAndVerifyClientCert,
 		}
 	}
