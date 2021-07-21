@@ -13,7 +13,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	cors "github.com/rs/cors/wrapper/gin"
 	"github.com/switch-li/juice/pkg/logger"
-	dlog "github.com/switch-li/juice/pkg/logger/default"
 	"github.com/switch-li/juice/transport/http/middleware/trace"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
@@ -60,7 +59,7 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 
 	if !opt.disablePProf {
 		pprof.Register(mux.engine)
-		dlog.DefaultLogger.Info("[register pprof]")
+		logger.Info("[register pprof]")
 	}
 
 	// if !opt.disableSwagger {
@@ -70,7 +69,7 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 
 	if !opt.disablePrometheus {
 		mux.engine.GET("/metrics", gin.WrapH(promhttp.Handler()))
-		dlog.DefaultLogger.Info("[register prometheus]")
+		logger.Info("[register prometheus]")
 	}
 
 	if opt.enableCors {

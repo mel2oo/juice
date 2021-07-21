@@ -2,11 +2,8 @@ package http
 
 import (
 	"crypto/tls"
-	"crypto/x509"
-	"io/ioutil"
 	"net"
 	"net/http"
-	"time"
 
 	"github.com/switch-li/juice/pkg/logger"
 	dlog "github.com/switch-li/juice/pkg/logger/default"
@@ -26,20 +23,25 @@ func Address(addr string) ServerOption {
 	}
 }
 
-func TLS(cafile, certfile, keyfile string) ServerOption {
+func TLSCert(certfile, keyfile string) ServerOption {
 	return func(s *Server) {
 		s.tls = true
-		s.caFile = cafile
 		s.certFile = certfile
 		s.keyFile = keyfile
 	}
 }
 
-func Timeout(timeout time.Duration) ServerOption {
+func TLSConfig(cnf *tls.Config) ServerOption {
 	return func(s *Server) {
-		s.timeout = timeout
+		s.TLSConfig = cnf
 	}
 }
+
+// func WithTimeout(timeout time.Duration) ServerOption {
+// 	return func(s *Server) {
+// 		s.timeout = timeout
+// 	}
+// }
 
 func Logger(log logger.Logger) ServerOption {
 	return func(s *Server) {
@@ -55,9 +57,9 @@ type Server struct {
 	caFile   string
 	certFile string
 	keyFile  string
-	timeout  time.Duration
-	log      logger.Logger
-	exit     chan chan error
+	// timeout  time.Duration
+	log  logger.Logger
+	exit chan chan error
 }
 
 func NewServer(mux *Mux, opts ...ServerOption) *Server {
@@ -67,27 +69,13 @@ func NewServer(mux *Mux, opts ...ServerOption) *Server {
 		},
 		network: "tcp",
 		address: ":",
-		timeout: time.Second * 5,
-		log:     dlog.DefaultLogger,
-		exit:    make(chan chan error),
+		// timeout: time.Second * 5,
+		log:  dlog.DefaultLogger,
+		exit: make(chan chan error),
 	}
 
 	for _, o := range opts {
 		o(srv)
-	}
-
-	if srv.tls {
-		pool := x509.NewCertPool()
-		caCrt, err := ioutil.ReadFile(srv.caFile)
-		if err != nil {
-			return nil
-		}
-		pool.AppendCertsFromPEM(caCrt)
-
-		srv.TLSConfig = &tls.Config{
-			ClientCAs:  pool,
-			ClientAuth: tls.RequireAndVerifyClientCert,
-		}
 	}
 
 	return srv
