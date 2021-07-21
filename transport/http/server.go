@@ -54,7 +54,6 @@ type Server struct {
 	network  string
 	address  string
 	tls      bool
-	caFile   string
 	certFile string
 	keyFile  string
 	// timeout  time.Duration
