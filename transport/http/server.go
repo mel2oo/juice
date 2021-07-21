@@ -1,6 +1,7 @@
 package http
 
 import (
+	"crypto/tls"
 	"net"
 	"net/http"
 	"time"
@@ -69,6 +70,12 @@ func NewServer(mux *Mux, opts ...ServerOption) *Server {
 
 	for _, o := range opts {
 		o(srv)
+	}
+
+	if srv.tls {
+		srv.TLSConfig = &tls.Config{
+			ClientAuth: tls.RequireAndVerifyClientCert,
+		}
 	}
 
 	return srv
