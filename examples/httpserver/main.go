@@ -52,7 +52,6 @@ func main() {
 		logger.WithDevelopment(),
 	)
 	mux, err := http.NewMux(
-		log,
 		http.WithEnableCors(),
 		http.WithEnableRate(),
 		http.WithSimplelogger(),

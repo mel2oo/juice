@@ -1,7 +1,6 @@
 package http
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -12,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	cors "github.com/rs/cors/wrapper/gin"
-	"github.com/switch-li/juice/pkg/logger"
+	dlog "github.com/switch-li/juice/pkg/logger/zap"
 	"github.com/switch-li/juice/transport/http/middleware/trace"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
@@ -41,10 +40,7 @@ var withoutTracePaths = map[string]bool{
 	"/system/health": true,
 }
 
-func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
-	if logger == nil {
-		return nil, errors.New("logger required")
-	}
+func NewMux(options ...Option) (*Mux, error) {
 
 	gin.SetMode(gin.ReleaseMode)
 	gin.DisableBindValidation()
@@ -52,14 +48,14 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 		engine: gin.New(),
 	}
 
-	opt := new(option)
+	opt := newOptions()
 	for _, f := range options {
 		f(opt)
 	}
 
 	if !opt.disablePProf {
 		pprof.Register(mux.engine)
-		logger.Info("[register pprof]")
+		dlog.DefaultLogger.Info("register pprof")
 	}
 
 	// if !opt.disableSwagger {
@@ -69,7 +65,7 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 
 	if !opt.disablePrometheus {
 		mux.engine.GET("/metrics", gin.WrapH(promhttp.Handler()))
-		logger.Info("[register prometheus]")
+		dlog.DefaultLogger.Info("register prometheus")
 	}
 
 	if opt.enableCors {
@@ -92,7 +88,7 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 	mux.engine.Use(func(ctx *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				logger.Error("got panic", zap.String("panic", fmt.Sprintf("%+v", err)), zap.String("stack", string(debug.Stack())))
+				opt.log.Error("got panic", zap.String("panic", fmt.Sprintf("%+v", err)), zap.String("stack", string(debug.Stack())))
 			}
 		}()
 
@@ -106,7 +102,7 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 		defer releaseContext(context)
 
 		context.init()
-		context.setLogger(logger)
+		context.setLogger(opt.log)
 
 		if !withoutTracePaths[ctx.Request.URL.Path] {
 			if traceId := context.GetHeader(trace.Header); traceId != "" {
@@ -119,7 +115,7 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 		defer func() {
 			if err := recover(); err != nil {
 				stackInfo := string(debug.Stack())
-				logger.Error("got panic", zap.String("panic", fmt.Sprintf("%+v", err)), zap.String("stack", stackInfo))
+				opt.log.Error("got panic", zap.String("panic", fmt.Sprintf("%+v", err)), zap.String("stack", stackInfo))
 				context.AbortWithError(NewError(
 					http.StatusInternalServerError,
 					ServerError,
@@ -236,7 +232,7 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 
 			if !opt.disableLogger {
 				if opt.simpleLogger {
-					logger.Debug(
+					opt.log.Debug(
 						fmt.Sprintf("interceptor | method: %s | path: %s | http_code: %d",
 							ctx.Request.Method,
 							decodedURL,
@@ -244,7 +240,7 @@ func NewMux(logger logger.Logger, options ...Option) (*Mux, error) {
 						),
 					)
 				} else {
-					logger.Debug("interceptor",
+					opt.log.Debug("interceptor",
 						zap.Any("method", ctx.Request.Method),
 						zap.Any("path", decodedURL),
 						zap.Any("http_code", ctx.Writer.Status()),

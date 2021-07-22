@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/switch-li/juice/pkg/logger"
-	dlog "github.com/switch-li/juice/pkg/logger/default"
+	"github.com/switch-li/juice/pkg/logger/zap"
 	"github.com/switch-li/juice/transport/grpc/middleware"
 	logging "github.com/switch-li/juice/transport/grpc/middleware/logging"
 	"google.golang.org/grpc"
@@ -58,7 +58,7 @@ func NewServer(opts ...ServerOption) *Server {
 		network: "tcp",
 		address: ":",
 		timeout: time.Second * 5,
-		log:     dlog.DefaultLogger,
+		log:     zap.DefaultLogger,
 	}
 
 	for _, o := range opts {

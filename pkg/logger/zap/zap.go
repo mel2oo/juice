@@ -13,6 +13,13 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+var DefaultLogger = NewZapLogger(
+	logger.WithPrefix("[juice] "),
+	logger.WithDevelopment(),
+	logger.WithDisableCaller(),
+	logger.WithDisableStacktrace(),
+)
+
 type ZapLogger struct {
 	*zap.Logger
 	opts *logger.Options

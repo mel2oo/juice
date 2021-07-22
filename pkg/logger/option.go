@@ -26,7 +26,7 @@ func NewOptions() *Options {
 	s := filepath.Base(os.Args[0])
 	// t := time.Now().Format("2006-01-02")
 	return &Options{
-		Development:       false,
+		Development:       true,
 		DisableCaller:     false,
 		DisableStacktrace: false,
 		Level:             DebugLevel,

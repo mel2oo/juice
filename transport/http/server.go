@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/switch-li/juice/pkg/logger"
-	dlog "github.com/switch-li/juice/pkg/logger/default"
+	"github.com/switch-li/juice/pkg/logger/zap"
 )
 
 type ServerOption func(*Server)
@@ -69,7 +69,7 @@ func NewServer(mux *Mux, opts ...ServerOption) *Server {
 		network: "tcp",
 		address: ":",
 		// timeout: time.Second * 5,
-		log:  dlog.DefaultLogger,
+		log:  zap.DefaultLogger,
 		exit: make(chan chan error),
 	}
 

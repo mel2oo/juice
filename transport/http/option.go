@@ -1,13 +1,15 @@
 package http
 
 import (
-	dlog "github.com/switch-li/juice/pkg/logger/default"
+	"github.com/switch-li/juice/pkg/logger"
+	"github.com/switch-li/juice/pkg/logger/zap"
 	"github.com/switch-li/juice/pkg/mail"
 )
 
 type Option func(*option)
 
 type option struct {
+	log          logger.Logger
 	disablePProf bool
 	// disableSwagger    bool
 	disablePrometheus bool
@@ -23,6 +25,18 @@ type option struct {
 type OnPanicNotify func(ctx Context, opts *mail.Options, err interface{}, stackInfo string)
 
 type RecordMetrics func(method, uri string, success bool, httpCode, businessCode int, costSeconds float64, traceId string)
+
+func newOptions() *option {
+	return &option{
+		log: zap.DefaultLogger,
+	}
+}
+
+func WithLogger(log logger.Logger) Option {
+	return func(opt *option) {
+		opt.log = log
+	}
+}
 
 func WithDisablePProf() Option {
 	return func(opt *option) {
@@ -57,7 +71,7 @@ func WithSimplelogger() Option {
 func WithPanicNotify(notify OnPanicNotify) Option {
 	return func(opt *option) {
 		opt.panicNotify = notify
-		dlog.DefaultLogger.Info("[register panic notify]")
+		zap.DefaultLogger.Info("register panic notify")
 	}
 }
 
@@ -76,14 +90,14 @@ func WithRecordMetrics(record RecordMetrics) Option {
 func WithEnableCors() Option {
 	return func(opt *option) {
 		opt.enableCors = true
-		dlog.DefaultLogger.Info("[register cors]")
+		zap.DefaultLogger.Info("register cors")
 	}
 }
 
 func WithEnableRate() Option {
 	return func(opt *option) {
 		opt.enableRate = true
-		dlog.DefaultLogger.Info("[register rate]")
+		zap.DefaultLogger.Info("register rate")
 	}
 }
 
