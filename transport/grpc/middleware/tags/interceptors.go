@@ -3,7 +3,7 @@ package tags
 import (
 	"context"
 
-	"github.com/switch-li/juice/transport/grpc/middleware"
+	"github.com/mel2oo/juice/transport/grpc/middleware"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/peer"

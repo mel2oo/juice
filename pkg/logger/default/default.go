@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/switch-li/juice/pkg/logger"
+	"github.com/mel2oo/juice/pkg/logger"
 )
 
 var DefaultLogger logger.Logger = NewDefaultLogger(

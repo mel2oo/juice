@@ -1,9 +1,9 @@
 package http
 
 import (
-	"github.com/switch-li/juice/pkg/logger"
-	"github.com/switch-li/juice/pkg/logger/zap"
-	"github.com/switch-li/juice/pkg/mail"
+	"github.com/mel2oo/juice/pkg/logger"
+	"github.com/mel2oo/juice/pkg/logger/zap"
+	"github.com/mel2oo/juice/pkg/mail"
 )
 
 type Option func(*option)

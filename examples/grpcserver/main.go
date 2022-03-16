@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 
-	pb "github.com/switch-li/juice/examples/greeter"
-	"github.com/switch-li/juice/pkg/logger"
-	"github.com/switch-li/juice/pkg/logger/zap"
-	"github.com/switch-li/juice/transport/grpc"
+	pb "github.com/mel2oo/juice/examples/greeter"
+	"github.com/mel2oo/juice/pkg/logger"
+	"github.com/mel2oo/juice/pkg/logger/zap"
+	"github.com/mel2oo/juice/transport/grpc"
 )
 
 type GreeterService struct {

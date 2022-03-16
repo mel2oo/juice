@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/switch-li/juice/pkg/logger"
-	"github.com/switch-li/juice/transport/grpc/middleware/logging/ctxzap"
+	"github.com/mel2oo/juice/pkg/logger"
+	"github.com/mel2oo/juice/transport/grpc/middleware/logging/ctxzap"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

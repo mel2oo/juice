@@ -3,7 +3,7 @@ package grpc_logging
 import (
 	"fmt"
 
-	"github.com/switch-li/juice/transport/grpc/middleware/logging/settable"
+	"github.com/mel2oo/juice/transport/grpc/middleware/logging/settable"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc/grpclog"

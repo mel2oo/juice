@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 
-	"github.com/switch-li/juice"
-	"github.com/switch-li/juice/examples/greeter"
-	lzap "github.com/switch-li/juice/pkg/logger/zap"
-	"github.com/switch-li/juice/pkg/shutdown"
-	"github.com/switch-li/juice/transport/grpc"
-	"github.com/switch-li/juice/transport/grpc/middleware"
-	grcp_logging "github.com/switch-li/juice/transport/grpc/middleware/logging"
+	"github.com/mel2oo/juice"
+	"github.com/mel2oo/juice/examples/greeter"
+	lzap "github.com/mel2oo/juice/pkg/logger/zap"
+	"github.com/mel2oo/juice/pkg/shutdown"
+	"github.com/mel2oo/juice/transport/grpc"
+	"github.com/mel2oo/juice/transport/grpc/middleware"
+	grcp_logging "github.com/mel2oo/juice/transport/grpc/middleware/logging"
 )
 
 func main() {

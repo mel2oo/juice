@@ -12,9 +12,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"github.com/switch-li/juice/pkg/logger"
-	"github.com/switch-li/juice/pkg/logger/zap"
-	"github.com/switch-li/juice/transport/http/middleware/trace"
+	"github.com/mel2oo/juice/pkg/logger"
+	"github.com/mel2oo/juice/pkg/logger/zap"
+	"github.com/mel2oo/juice/transport/http/middleware/trace"
 )
 
 type HandlerFunc func(c Context)

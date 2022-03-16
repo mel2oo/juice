@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"time"
 
-	"github.com/switch-li/juice/transport/http/middleware/notify/templates"
+	"github.com/mel2oo/juice/transport/http/middleware/notify/templates"
 )
 
 func NewPanicHTMLEmail(method, host, uri, id string, msg interface{}, stack string) (subject string, body string, err error) {

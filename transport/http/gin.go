@@ -9,10 +9,10 @@ import (
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
+	dlog "github.com/mel2oo/juice/pkg/logger/zap"
+	"github.com/mel2oo/juice/transport/http/middleware/trace"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	cors "github.com/rs/cors/wrapper/gin"
-	dlog "github.com/switch-li/juice/pkg/logger/zap"
-	"github.com/switch-li/juice/transport/http/middleware/trace"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 	"golang.org/x/time/rate"

@@ -5,9 +5,9 @@ import (
 	"mime/multipart"
 	http2 "net/http"
 
-	"github.com/switch-li/juice/pkg/logger"
-	"github.com/switch-li/juice/pkg/logger/zap"
-	"github.com/switch-li/juice/transport/http"
+	"github.com/mel2oo/juice/pkg/logger"
+	"github.com/mel2oo/juice/pkg/logger/zap"
+	"github.com/mel2oo/juice/transport/http"
 )
 
 func Hello() http.HandlerFunc {

@@ -3,7 +3,7 @@ package grpc_logging
 import (
 	"context"
 
-	"github.com/switch-li/juice/transport/grpc/middleware/logging/ctxzap"
+	"github.com/mel2oo/juice/transport/grpc/middleware/logging/ctxzap"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

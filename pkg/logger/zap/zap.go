@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mel2oo/juice/pkg/logger"
 	"github.com/natefinch/lumberjack"
-	"github.com/switch-li/juice/pkg/logger"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

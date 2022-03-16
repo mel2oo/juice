@@ -5,8 +5,8 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/switch-li/juice/pkg/logger"
-	"github.com/switch-li/juice/pkg/logger/zap"
+	"github.com/mel2oo/juice/pkg/logger"
+	"github.com/mel2oo/juice/pkg/logger/zap"
 )
 
 type ServerOption func(*Server)

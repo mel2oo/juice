@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/switch-li/juice/examples/greeter"
+	pb "github.com/mel2oo/juice/examples/greeter"
 
 	"google.golang.org/grpc"
 )

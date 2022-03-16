@@ -9,8 +9,8 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/mel2oo/juice/transport/http/middleware/trace"
 	"github.com/pkg/errors"
-	"github.com/switch-li/juice/transport/http/middleware/trace"
 	"go.uber.org/zap"
 )
 

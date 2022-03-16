@@ -4,10 +4,10 @@ import (
 	"net"
 	"time"
 
-	"github.com/switch-li/juice/pkg/logger"
-	"github.com/switch-li/juice/pkg/logger/zap"
-	"github.com/switch-li/juice/transport/grpc/middleware"
-	logging "github.com/switch-li/juice/transport/grpc/middleware/logging"
+	"github.com/mel2oo/juice/pkg/logger"
+	"github.com/mel2oo/juice/pkg/logger/zap"
+	"github.com/mel2oo/juice/transport/grpc/middleware"
+	logging "github.com/mel2oo/juice/transport/grpc/middleware/logging"
 	"google.golang.org/grpc"
 )
 

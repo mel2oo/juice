@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/switch-li/juice/transport/grpc/middleware/logging/ctxzap"
+	"github.com/mel2oo/juice/transport/grpc/middleware/logging/ctxzap"
 
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"

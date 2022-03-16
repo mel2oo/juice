@@ -3,7 +3,7 @@ package dlog
 import (
 	"testing"
 
-	"github.com/switch-li/juice/pkg/logger"
+	"github.com/mel2oo/juice/pkg/logger"
 )
 
 func Test_DefaultLogger(t *testing.T) {

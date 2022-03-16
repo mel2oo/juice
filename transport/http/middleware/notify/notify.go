@@ -1,8 +1,8 @@
 package notify
 
 import (
-	"github.com/switch-li/juice/pkg/mail"
-	"github.com/switch-li/juice/transport/http"
+	"github.com/mel2oo/juice/pkg/mail"
+	"github.com/mel2oo/juice/transport/http"
 	"go.uber.org/zap"
 )
 

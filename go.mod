@@ -1,4 +1,4 @@
-module github.com/switch-li/juice
+module github.com/mel2oo/juice
 
 go 1.16
 
